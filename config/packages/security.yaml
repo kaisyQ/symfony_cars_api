@@ -14,6 +14,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            json_login:
+                check_path: api_auth_login
+                username_path: email
             lazy: true
             provider: app_user_provider
 
@@ -22,7 +25,9 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-
+    role_hierarchy:
+        ROLE_MANAGER:     ROLE_USER
+        ROLE_ADMIN:       ROLE_MANAGER
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
