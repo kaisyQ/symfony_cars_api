@@ -2,10 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\User;
-use App\Model\UserResponse;
+use App\Model\AuthResponse;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\Response;
 
 class AuthService
 {
@@ -15,16 +13,16 @@ class AuthService
         $this->security = $security;
     }
 
-    public function login(): ?UserResponse {
+    public function login(): ?AuthResponse {
         $user = $this->security->getUser();
 
-        return new UserResponse(
+        return new AuthResponse(
             $user->getUserIdentifier(),
             $user->getRoles()
         );
     }
 
-    public function checkMe (): ?UserResponse {
+    public function checkMe (): ?AuthResponse {
 
         $user = $this->security->getUser();
 
@@ -32,7 +30,7 @@ class AuthService
             return null;
         }
 
-        return new UserResponse(
+        return new AuthResponse(
             $user->getUserIdentifier(),
             $user->getRoles()
         );
