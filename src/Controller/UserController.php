@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use OpenApi\Annotations\OpenApi;
 
 #[Route(path: '/admin/users')]
 #[IsGranted('ROLE_ADMIN')]
@@ -18,7 +19,6 @@ class UserController extends AbstractController
     {
         $this->userService = $userService;
     }
-
     #[Route(path: '/', name: 'admin_users_index', methods: ['GET'])]
     public function index() : Response {
 

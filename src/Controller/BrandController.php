@@ -15,7 +15,7 @@ class BrandController extends AbstractController
     {
         $this->brandService = $brandService;
     }
-    #[Route('/api/brand', name: 'api_brand_index', methods: ['GET', 'HEAD'])]
+    #[Route('/api/brand', name: 'api_brand_index', methods: ['GET'])]
     public function index() : Response {
         return $this->json($this->brandService->getBrands());
     }

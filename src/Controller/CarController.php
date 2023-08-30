@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+use App\Model\CarListResponse;
 use App\Service\CarService;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
+use OpenApi\Attributes as OA;
 class CarController extends AbstractController
 {
     private CarService $carService;
@@ -18,15 +20,24 @@ class CarController extends AbstractController
         $this->carService = $carService;
     }
 
+    #[OA\Response(
+        response: 200,
+        description: 'Returns all cars',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: CarListResponse::class))
+        )
+    )]
+    #[Route('/api/cars', name: 'api_car_index', methods: ['GET'])]
 
-    #[Route('/api/cars', name: 'api_car_index', methods: ['GET', 'HEAD'])]
     #[IsGranted('PUBLIC_ACCESS')]
+
     public function index(): Response
     {
         return $this->json($this->carService->getCars());
     }
 
-    #[Route(path: '/api/cars/{id}', name: 'api_car_show', methods: ['GET', 'HEAD'])]
+    #[Route(path: '/api/cars/{id}', name: 'api_car_show', methods: ['GET'])]
     #[IsGranted('PUBLIC_ACCESS')]
     public function show(string $id): Response {
         return  $this->json($this->carService->getCarById($id));
