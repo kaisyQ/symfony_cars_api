@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(path: '/api/v1/brands')]
 class BrandController extends AbstractController
 {
 
@@ -15,7 +16,7 @@ class BrandController extends AbstractController
     {
         $this->brandService = $brandService;
     }
-    #[Route('/api/brand', name: 'api_brand_index', methods: ['GET'])]
+    #[Route('/', name: 'api_v1_brand_index', methods: ['GET'])]
     public function index() : Response {
         return $this->json($this->brandService->getBrands());
     }

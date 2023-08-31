@@ -72,7 +72,7 @@ class CarService
         $car = $this->carRepository->find($id);
 
         if (!$car) {
-            return throw new Error('THERE IS NO CAR WITH ID=' . $id, );
+            return throw new Error('THERE IS NO CAR WITH ID=' . $id);
         }
 
         $this->em->remove($car);
