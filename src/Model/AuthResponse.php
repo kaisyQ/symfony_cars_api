@@ -5,6 +5,10 @@ namespace App\Model;
 class AuthResponse
 {
     private string $email;
+
+    /**
+     * @var string[]
+     */
     private array $roles;
     public function __construct(string $email, array $roles)
     {
