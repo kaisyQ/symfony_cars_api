@@ -16,10 +16,14 @@ class AuthService
     public function login(): ?AuthResponse {
         $user = $this->security->getUser();
 
-        return new AuthResponse(
-            $user->getUserIdentifier(),
-            $user->getRoles()
-        );
+        if ($user) {
+            return new AuthResponse(
+                $user->getUserIdentifier(),
+                $user->getRoles()
+            );
+        }
+
+        return null;
     }
 
     public function checkMe (): ?AuthResponse {

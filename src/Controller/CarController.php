@@ -23,7 +23,7 @@ class CarController extends AbstractController
     {
         $this->carService = $carService;
     }
-    #[Route('/', name: 'api_v1_car_index', methods: ['GET'])]
+    #[Route(path: '/index', name: 'api_v1_car_index', methods: ['GET'])]
     #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
