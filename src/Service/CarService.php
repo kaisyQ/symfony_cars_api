@@ -83,19 +83,25 @@ class CarService
 
     public function updateCar(string $id, $content): CarListItem {
 
-        $carRequest = new UpdateCarRequest($id, $content->name, $content->brandId);
+        $carRequest = new UpdateCarRequest($id, $content->name, $content->brandName, $content->wheelPosition);
 
         $car = $this->carRepository->find($id);
 
-        if (!$car) {
-            return throw new Error('THERE IS NO CAR WITH ID=' . $id, );
+        $brand = $this->brandRepository->findBrandByNameAndWheelPos(
+            $content->brandName, $content->wheelPosition
+        );
+
+        if (!$brand) {
+            return throw new Error('THERE IS NO BRAND' . $id);
         }
 
-        if ($car->getName() === $carRequest->getName() && $car->getBrand()->getId() === $carRequest->getBrandId()) {
+        if (!$car) {
+            return throw new Error('THERE IS NO CAR WITH ID=' . $id);
+        }
+
+        if ($car->getName() === $carRequest->getName() && $car->getBrand()->getId() === $brand->getId()) {
             return throw new Error('THERE IS NOTHING TO UPDATE');
         }
-
-        $brand = $this->brandRepository->find($carRequest->getBrandId());
 
         $car->setBrand($brand);
         $car->setName($carRequest->getName());
@@ -116,9 +122,11 @@ class CarService
     }
     public function createCar($content): CarListItem
     {
-        $carRequest = new CreateCarRequest($content->name, $content->brandId);
+        $carRequest = new CreateCarRequest($content->name, $content->brandName, $content->wheelPosition);
 
-        $brand = $this->brandRepository->find($carRequest->getBrandId());
+        $brand = $this->brandRepository->findBrandByNameAndWheelPos(
+            $carRequest->getBrandName(), $carRequest->getWheelPosition()
+        );
 
         if (!$brand) {
             return throw new Error('THERE IS NO BRAND');

@@ -21,4 +21,15 @@ class BrandRepository extends ServiceEntityRepository
         parent::__construct($registry, Brand::class);
     }
 
+    public function findBrandByNameAndWheelPos(string $name, string $wheelPosition): ?Brand
+    {
+        $brand = $this->findOneBy([
+            'name' => $name,
+            'wheelPosition' => $wheelPosition
+        ]);
+        if (!$brand) {
+            return null;
+        }
+        return $brand;
+    }
 }

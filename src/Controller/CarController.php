@@ -38,20 +38,6 @@ class CarController extends AbstractController
         return $this->json($this->carService->getCars());
     }
 
-    #[Route(path: '/{id}', name: 'api_v1_car_show', methods: ['GET'])]
-    #[IsGranted('PUBLIC_ACCESS')]
-    #[OA\Response(
-        response: 200,
-        description: 'Return the car by ID',
-        content: new OA\JsonContent(
-            ref: new Model(type: CarListItem::class)
-        )
-
-    )]
-    public function show(string $id): Response {
-        return  $this->json($this->carService->getCarById($id));
-    }
-
     #[Route(path: '/delete/{id}', name: 'api_v1_car_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     #[OA\Response(
@@ -69,7 +55,8 @@ class CarController extends AbstractController
     }
 
     #[Route(path: '/update/{id}', name: 'api_v1_car_update', methods: ['PUT'])]
-    #[IsGranted('ROLE_MANAGER')]
+    //#[IsGranted('ROLE_MANAGER')]
+    #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
         description: 'Return updated car',
@@ -90,7 +77,8 @@ class CarController extends AbstractController
     }
 
     #[Route(path: '/create', name: 'api_v1_car_create', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    //#[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
         description: 'Return created car',
@@ -108,5 +96,19 @@ class CarController extends AbstractController
         $content = json_decode($request->getContent());
 
         return $this->json($this->carService->createCar($content));
+    }
+
+    #[Route(path: '/{id}', name: 'api_v1_car_show', methods: ['GET'])]
+    #[IsGranted('PUBLIC_ACCESS')]
+    #[OA\Response(
+        response: 200,
+        description: 'Return the car by ID',
+        content: new OA\JsonContent(
+            ref: new Model(type: CarListItem::class)
+        )
+
+    )]
+    public function show(string $id): Response {
+        return  $this->json($this->carService->getCarById($id));
     }
 }

@@ -10,13 +10,18 @@ class CreateCarRequest
     private string $name;
     #[Assert\NotBlank]
     #[Assert\NotNull]
-    private string $brandId;
+    private string $brandName;
+
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
+    private string $wheelPosition;
 
 
-    public function __construct(string $name, string $brandId)
+    public function __construct(string $name, string $brandName, string $wheelPosition)
     {
         $this->name = $name;
-        $this->brandId = $brandId;
+        $this->brandName = $brandName;
+        $this->wheelPosition = $wheelPosition;
     }
 
     public function getName(): string
@@ -24,9 +29,15 @@ class CreateCarRequest
         return $this->name;
     }
 
-    public function getBrandId(): string
+    public function getBrandName(): string
     {
-        return $this->brandId;
+        return $this->brandName;
     }
+
+    public function getWheelPosition(): string
+    {
+        return $this->wheelPosition;
+    }
+
 
 }
