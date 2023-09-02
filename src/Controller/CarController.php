@@ -40,6 +40,7 @@ class CarController extends AbstractController
 
     #[Route(path: '/delete/{id}', name: 'api_v1_car_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
         description: 'Return deleted car ID',
@@ -55,7 +56,7 @@ class CarController extends AbstractController
     }
 
     #[Route(path: '/update/{id}', name: 'api_v1_car_update', methods: ['PUT'])]
-    //#[IsGranted('ROLE_MANAGER')]
+    #[IsGranted('ROLE_MANAGER')]
     #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
@@ -77,7 +78,7 @@ class CarController extends AbstractController
     }
 
     #[Route(path: '/create', name: 'api_v1_car_create', methods: ['POST'])]
-    //#[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
