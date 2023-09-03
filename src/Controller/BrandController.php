@@ -21,22 +21,44 @@ class BrandController extends AbstractController
     #[Route(path: '/index', name: 'api_v1_brand_index', methods: ['GET'])]
     #[IsGranted('PUBLIC_ACCESS')]
     public function index() : Response {
-        return $this->json($this->brandService->getBrands());
+        try {
+            return $this->json($this->brandService->getBrands());
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     #[Route(path: '/create', name: 'api_v1_brand_create', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): Response {
+        try {
+            $content = json_decode($request->getContent());
 
-        $content = json_decode($request->getContent());
+            return $this->json($this->brandService->createBrand($content->name));
 
-        return $this->json($this->brandService->createBrand($content->name));
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     #[Route(path: '/index/names', name: 'api_v1_brand_index_names', methods: ['GET'])]
     #[IsGranted('PUBLIC_ACCESS')]
     public function names() : Response {
-        return $this->json($this->brandService->getBrandNames());
+
+        try {
+
+            return $this->json($this->brandService->getBrandNames());
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
 }
