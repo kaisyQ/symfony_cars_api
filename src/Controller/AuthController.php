@@ -38,17 +38,31 @@ class AuthController extends AbstractController
     )]
     public function login(): Response
     {
+        try {
 
-        return $this->json($this->authService->login());
+            return $this->json($this->authService->login());
 
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     #[Route('/logout', name: 'api_v1_auth_logout', methods: ['DELETE'])]
     public function logout(): Response
     {
-        $this->authService->logout();
+        try {
 
-        return $this->json([], Response::HTTP_OK);
+            $this->authService->logout();
+
+            return $this->json([], Response::HTTP_OK);
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
 
     }
     #[Route(path: '/check', name: 'api_v1_auth_check', methods: ['GET'])]
@@ -61,8 +75,14 @@ class AuthController extends AbstractController
     )]
     public function check(): Response
     {
+        try {
 
-        return $this->json($this->authService->checkMe());
+            return $this->json($this->authService->checkMe());
 
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 }

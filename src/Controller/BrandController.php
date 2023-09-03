@@ -49,7 +49,6 @@ class BrandController extends AbstractController
     #[Route(path: '/index/names', name: 'api_v1_brand_index_names', methods: ['GET'])]
     #[IsGranted('PUBLIC_ACCESS')]
     public function names() : Response {
-
         try {
 
             return $this->json($this->brandService->getBrandNames());
