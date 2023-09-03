@@ -54,6 +54,9 @@ class CarServiceTest extends TestCase
         $this->assertEquals($expected, $service->getCars());
     }
 
+    /**
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testGetCarById () : void {
         $carRepository = $this->createMock(CarRepository::class);
         $brandRepository = $this->createMock(BrandRepository::class);
@@ -92,6 +95,9 @@ class CarServiceTest extends TestCase
         $this->assertEquals($expected, $service->getCarById(1));
     }
 
+    /**
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testDeleteCarById () : void
     {
         $carRepository = $this->createMock(CarRepository::class);
@@ -123,6 +129,9 @@ class CarServiceTest extends TestCase
         $this->assertEquals($expected, $service->deleteCarById(1));
     }
 
+    /**
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testCreateCar() : void
     {
         $carRepository = $this->createMock(CarRepository::class);
@@ -178,6 +187,9 @@ class CarServiceTest extends TestCase
         ]));
     }
 
+    /**
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testUpdateCar() : void
     {
         $carRepository = $this->createMock(CarRepository::class);

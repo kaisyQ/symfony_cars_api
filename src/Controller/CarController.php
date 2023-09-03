@@ -46,7 +46,7 @@ class CarController extends AbstractController
         description: 'Return deleted car ID',
         content: new OA\JsonContent(
             properties: [
-                new OA\Property(property: 'id', type: 'string')
+                new OA\Property(property: 'id', type: 'int')
             ],
             type: 'object'
         )
@@ -57,12 +57,12 @@ class CarController extends AbstractController
 
     #[Route(path: '/update/{id}', name: 'api_v1_car_update', methods: ['PUT'])]
     #[IsGranted('ROLE_MANAGER')]
-    #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
-        description: 'Return updated car',
+        description: 'Return array with only one updated car',
         content: new OA\JsonContent(
-            ref: new Model(type: CarListItem::class)
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: CarListResponse::class))
         )
     )]
     #[OA\RequestBody(
@@ -79,12 +79,12 @@ class CarController extends AbstractController
 
     #[Route(path: '/create', name: 'api_v1_car_create', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
-        description: 'Return created car',
+        description: 'Return array with only one created car',
         content: new OA\JsonContent(
-            ref: new Model(type: CarListItem::class)
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: CarListResponse::class))
         )
     )]
     #[OA\RequestBody(
@@ -103,9 +103,10 @@ class CarController extends AbstractController
     #[IsGranted('PUBLIC_ACCESS')]
     #[OA\Response(
         response: 200,
-        description: 'Return the car by ID',
+        description: 'Return array with only one founded by id car',
         content: new OA\JsonContent(
-            ref: new Model(type: CarListItem::class)
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: CarListResponse::class))
         )
 
     )]
