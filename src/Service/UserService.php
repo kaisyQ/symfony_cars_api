@@ -81,16 +81,15 @@ class UserService
 
         $user = $this->userRepository->findByEmail($email);
 
-        if ($user) {
-
-            $this->em->remove($user);
-
-            $this->em->flush();
-
-            return $email;
-
+        if (!$user) {
+            throw new \Error('THERE IS NO USER WITH EMAIL = ' . $email);
         }
 
-        return '';
+
+        $this->em->remove($user);
+
+        $this->em->flush();
+
+        return $email;
     }
 }

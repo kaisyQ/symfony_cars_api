@@ -5,9 +5,9 @@ namespace App\Model;
 class UserListItem
 {
     private string $email;
-    private string $id;
+    private int $id;
     private array $roles;
-    public function __construct(string $email, string $id, array $roles)
+    public function __construct(string $email, int $id, array $roles)
     {
         $this->email = $email;
         $this->id = $id;
@@ -18,9 +18,11 @@ class UserListItem
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     public function getId(): string
@@ -28,9 +30,11 @@ class UserListItem
         return $this->id;
     }
 
-    public function setId(string $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getRoles(): array
@@ -38,8 +42,9 @@ class UserListItem
         return $this->roles;
     }
 
-    public function setRoles(array $roles): void
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+        return $this;
     }
 }
