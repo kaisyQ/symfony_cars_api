@@ -34,6 +34,15 @@ class CarController extends AbstractController
             items: new OA\Items(ref: new Model(type: CarListResponse::class))
         )
     )]
+    #[OA\Response(
+        response: 500,
+        description: 'Returns a message about the error that occurred',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
+    )]
     public function index(): Response
     {
         try {
@@ -60,6 +69,24 @@ class CarController extends AbstractController
             type: 'object'
         )
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'An error that says that server cant found something that he need',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
+    )]
+    #[OA\Response(
+        response: 500,
+        description: 'Returns a message about the error that occurred',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
+    )]
     public function delete(int $id): Response {
         try {
 
@@ -84,6 +111,33 @@ class CarController extends AbstractController
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(ref: new Model(type: CarListResponse::class))
+        )
+    )]
+    #[OA\Response(
+        response: 204,
+        description: 'An error that says that there is nothing to update',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'An error that says that server cant found something that he need',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
+    )]
+    #[OA\Response(
+        response: 500,
+        description: 'Returns a message about the error that occurred',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
         )
     )]
     #[OA\RequestBody(
@@ -119,6 +173,24 @@ class CarController extends AbstractController
             items: new OA\Items(ref: new Model(type: CarListResponse::class))
         )
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'An error that says that server cant found something that he need',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
+    )]
+    #[OA\Response(
+        response: 500,
+        description: 'Returns a message about the error that occurred',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
+    )]
     #[OA\RequestBody(
         content: new OA\JsonContent(
             ref: new Model(type: CreateCarRequest::class)
@@ -151,7 +223,24 @@ class CarController extends AbstractController
             type: 'array',
             items: new OA\Items(ref: new Model(type: CarListResponse::class))
         )
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'An error that says that server cant found something that he need',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
 
+        )
+    )]
+    #[OA\Response(
+        response: 500,
+        description: 'Returns a message about the error that occurred',
+        content: new OA\JsonContent(
+            properties: [ new OA\Property(property:'message', type: 'string') ],
+            type: 'object'
+
+        )
     )]
     public function show(string $id): Response {
         try {
