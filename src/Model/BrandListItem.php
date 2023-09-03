@@ -4,7 +4,7 @@ namespace App\Model;
 
 class BrandListItem
 {
-    private string $id;
+    private int $id;
 
     private string $name;
 
@@ -22,6 +22,12 @@ class BrandListItem
 
     public function getId () : int {
         return $this->id;
+    }
+
+    public function setId(int $id) : self
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getName () : string {

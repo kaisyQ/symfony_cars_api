@@ -4,7 +4,7 @@ namespace App\Model;
 
 class CarListItem
 {
-    private int $id;
+    private ?int $id;
     private string $name;
     private string $slug;
     private BrandListItem $brand;

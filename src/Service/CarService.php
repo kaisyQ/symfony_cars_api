@@ -10,6 +10,7 @@ use App\Model\CreateCarRequest;
 use App\Model\UpdateCarRequest;
 use App\Repository\BrandRepository;
 use App\Repository\CarRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
 class CarService
@@ -45,34 +46,35 @@ class CarService
         return new CarListResponse($items);
     }
 
-    public function getCarById(string $id): CarListItem {
+    public function getCarById(string $id): CarListResponse {
+
         $car = $this->carRepository->find($id);
 
         if (!$car) {
-            return throw new Error('THERE IS NO CAR WITH ID=' . $id, );
+            throw new Error('THERE IS NO CAR WITH ID=' . $id, );
         }
 
-
-
-        return new CarListItem(
-            $car->getId(),
-            $car->getName(),
-            $car->getSlug(),
-            new BrandListItem(
-                $car->getBrand()->getId(),
-                $car->getBrand()->getName(),
-                $car->getBrand()->getWheelPosition(),
-                $car->getBrand()->getSlug()
+        return new CarListResponse([
+            new CarListItem(
+                $car->getId(),
+                $car->getName(),
+                $car->getSlug(),
+                new BrandListItem(
+                    $car->getBrand()->getId(),
+                    $car->getBrand()->getName(),
+                    $car->getBrand()->getWheelPosition(),
+                    $car->getBrand()->getSlug()
+                )
             )
-        );
+        ]);
     }
 
-    public function deleteCarById(string $id): array {
+    public function deleteCarById(int $id): array {
 
         $car = $this->carRepository->find($id);
 
         if (!$car) {
-            return throw new Error('THERE IS NO CAR WITH ID=' . $id);
+            throw new Error('THERE IS NO CAR WITH ID=' . $id);
         }
 
         $this->em->remove($car);
@@ -81,7 +83,7 @@ class CarService
         return ['id' => $id];
     }
 
-    public function updateCar(string $id, $content): CarListItem {
+    public function updateCar(int $id, $content): CarListResponse {
 
         $carRequest = new UpdateCarRequest($id, $content->name, $content->brandName, $content->wheelPosition);
 
@@ -92,15 +94,15 @@ class CarService
         );
 
         if (!$brand) {
-            return throw new Error('THERE IS NO BRAND' . $id);
+            throw new Error('THERE IS NO BRAND' . $id);
         }
 
         if (!$car) {
-            return throw new Error('THERE IS NO CAR WITH ID=' . $id);
+            throw new Error('THERE IS NO CAR WITH ID=' . $id);
         }
 
         if ($car->getName() === $carRequest->getName() && $car->getBrand()->getId() === $brand->getId()) {
-            return throw new Error('THERE IS NOTHING TO UPDATE');
+            throw new Error('THERE IS NOTHING TO UPDATE');
         }
 
         $car->setBrand($brand);
@@ -108,19 +110,25 @@ class CarService
 
         $this->em->flush();
 
-        return new CarListItem(
-            $car->getId(),
-            $car->getName(),
-            $car->getSlug(),
-            new BrandListItem(
-                $car->getBrand()->getId(),
-                $car->getBrand()->getName(),
-                $car->getBrand()->getWheelPosition(),
-                $car->getBrand()->getSlug()
-            )
+
+        return  new CarListResponse(
+            [
+                new CarListItem(
+                    $car->getId(),
+                    $car->getName(),
+                    $car->getSlug(),
+                    new BrandListItem(
+                        $car->getBrand()->getId(),
+                        $car->getBrand()->getName(),
+                        $car->getBrand()->getWheelPosition(),
+                        $car->getBrand()->getSlug()
+                    )
+                )
+            ]
         );
+
     }
-    public function createCar($content): CarListItem
+    public function createCar($content): CarListResponse
     {
         $carRequest = new CreateCarRequest($content->name, $content->brandName, $content->wheelPosition);
 
@@ -129,7 +137,7 @@ class CarService
         );
 
         if (!$brand) {
-            return throw new Error('THERE IS NO BRAND');
+            throw new Error('THERE IS NO BRAND');
         }
 
         $car = new Car();
@@ -141,16 +149,22 @@ class CarService
 
         $this->em->flush();
 
-        return new CarListItem(
-            $car->getId(),
-            $car->getName(),
-            $car->getSlug(),
-            new BrandListItem(
-                $car->getBrand()->getId(),
-                $car->getBrand()->getName(),
-                $car->getBrand()->getWheelPosition(),
-                $car->getBrand()->getSlug()
-            )
+        $biggestId = $this->carRepository->findAll(['id' => Criteria::DESC])[0]->getId();
+
+        return new CarListResponse(
+            [
+                new CarListItem(
+                    $biggestId + 1,
+                    $car->getName(),
+                    $car->getSlug(),
+                    new BrandListItem(
+                        $car->getBrand()->getId(),
+                        $car->getBrand()->getName(),
+                        $car->getBrand()->getWheelPosition(),
+                        $car->getBrand()->getSlug()
+                    )
+                )
+            ]
         );
     }
 }

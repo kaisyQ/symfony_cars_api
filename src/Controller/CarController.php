@@ -51,7 +51,7 @@ class CarController extends AbstractController
             type: 'object'
         )
     )]
-    public function delete(string $id): Response {
+    public function delete(int $id): Response {
         return $this->json($this->carService->deleteCarById($id));
     }
 
@@ -70,7 +70,7 @@ class CarController extends AbstractController
             ref: new Model(type: UpdateCarRequest::class)
         )
     )]
-    public function update(Request $request, string $id): Response {
+    public function update(Request $request, int $id): Response {
 
         $content = json_decode($request->getContent());
 
