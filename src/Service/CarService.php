@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Car;
+use App\Exception\NotFoundException;
+use App\Exception\NothingToUpdateException;
 use App\Model\BrandListItem;
 use App\Model\CarListItem;
 use App\Model\CarListResponse;
@@ -12,7 +14,7 @@ use App\Repository\BrandRepository;
 use App\Repository\CarRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use Error;
+
 class CarService
 {
     private CarRepository $carRepository;
@@ -46,12 +48,15 @@ class CarService
         return new CarListResponse($items);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function getCarById(string $id): CarListResponse {
 
         $car = $this->carRepository->find($id);
 
         if (!$car) {
-            throw new Error('THERE IS NO CAR WITH ID=' . $id, );
+            throw new NotFoundException();
         }
 
         return new CarListResponse([
@@ -69,12 +74,15 @@ class CarService
         ]);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function deleteCarById(int $id): array {
 
         $car = $this->carRepository->find($id);
 
         if (!$car) {
-            throw new Error('THERE IS NO CAR WITH ID=' . $id);
+            throw new NotFoundException();
         }
 
         $this->em->remove($car);
@@ -83,26 +91,34 @@ class CarService
         return ['id' => $id];
     }
 
+    /**
+     * @throws NotFoundException
+     * @throws NothingToUpdateException
+     */
     public function updateCar(int $id, $content): CarListResponse {
 
         $carRequest = new UpdateCarRequest($id, $content->name, $content->brandName, $content->wheelPosition);
 
         $car = $this->carRepository->find($id);
 
+        if (!$car) {
+            throw new NotFoundException();
+        }
+
+
         $brand = $this->brandRepository->findBrandByNameAndWheelPos(
             $content->brandName, $content->wheelPosition
         );
 
         if (!$brand) {
-            throw new Error('THERE IS NO BRAND' . $id);
+            throw new NotFoundException();
         }
 
-        if (!$car) {
-            throw new Error('THERE IS NO CAR WITH ID=' . $id);
-        }
 
         if ($car->getName() === $carRequest->getName() && $car->getBrand()->getId() === $brand->getId()) {
-            throw new Error('THERE IS NOTHING TO UPDATE');
+
+            throw new NothingToUpdateException();
+
         }
 
         $car->setBrand($brand);
@@ -128,6 +144,10 @@ class CarService
         );
 
     }
+
+    /**
+     * @throws NotFoundException
+     */
     public function createCar($content): CarListResponse
     {
         $carRequest = new CreateCarRequest($content->name, $content->brandName, $content->wheelPosition);
@@ -137,7 +157,7 @@ class CarService
         );
 
         if (!$brand) {
-            throw new Error('THERE IS NO BRAND');
+            throw new NotFoundException();
         }
 
         $car = new Car();

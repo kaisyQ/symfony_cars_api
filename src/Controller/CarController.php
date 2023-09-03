@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Model\CarListItem;
+use App\Exception\NotFoundException;
+use App\Exception\NothingToUpdateException;
 use App\Model\CarListResponse;
 use App\Model\CreateCarRequest;
 use App\Model\UpdateCarRequest;
@@ -35,7 +36,15 @@ class CarController extends AbstractController
     )]
     public function index(): Response
     {
-        return $this->json($this->carService->getCars());
+        try {
+
+            return $this->json($this->carService->getCars());
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     #[Route(path: '/delete/{id}', name: 'api_v1_car_delete', methods: ['DELETE'])]
@@ -52,7 +61,19 @@ class CarController extends AbstractController
         )
     )]
     public function delete(int $id): Response {
-        return $this->json($this->carService->deleteCarById($id));
+        try {
+
+            return $this->json($this->carService->deleteCarById($id));
+
+        } catch (NotFoundException $exception){
+
+            return $this->json(['message' => $exception->getMessage()], $exception->getCode());
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     #[Route(path: '/update/{id}', name: 'api_v1_car_update', methods: ['PUT'])]
@@ -71,10 +92,21 @@ class CarController extends AbstractController
         )
     )]
     public function update(Request $request, int $id): Response {
+        try {
 
-        $content = json_decode($request->getContent());
+            $content = json_decode($request->getContent());
 
-        return $this->json($this->carService->updateCar($id, $content));
+            return $this->json($this->carService->updateCar($id, $content), Response::HTTP_OK);
+
+        } catch (NotFoundException|NothingToUpdateException $exception){
+
+            return $this->json(['message' => $exception->getMessage()], $exception->getCode());
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     #[Route(path: '/create', name: 'api_v1_car_create', methods: ['POST'])]
@@ -93,10 +125,21 @@ class CarController extends AbstractController
         )
     )]
     public function create(Request $request): Response {
+        try {
 
-        $content = json_decode($request->getContent());
+            $content = json_decode($request->getContent());
 
-        return $this->json($this->carService->createCar($content));
+            return $this->json($this->carService->createCar($content));
+
+        } catch (NotFoundException $exception){
+
+            return $this->json(['message' => $exception->getMessage()], $exception->getCode());
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     #[Route(path: '/{id}', name: 'api_v1_car_show', methods: ['GET'])]
@@ -111,6 +154,18 @@ class CarController extends AbstractController
 
     )]
     public function show(string $id): Response {
-        return  $this->json($this->carService->getCarById($id));
+        try {
+
+            return  $this->json($this->carService->getCarById($id));
+
+        } catch (NotFoundException $exception){
+
+            return $this->json(['message' => $exception->getMessage()], $exception->getCode());
+
+        } catch (\Exception $exception) {
+
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
     }
 }
