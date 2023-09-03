@@ -18,13 +18,13 @@ class BrandController extends AbstractController
     {
         $this->brandService = $brandService;
     }
-    #[Route('/index', name: 'api_v1_brand_index', methods: ['GET'])]
+    #[Route(path: '/index', name: 'api_v1_brand_index', methods: ['GET'])]
     #[IsGranted('PUBLIC_ACCESS')]
     public function index() : Response {
         return $this->json($this->brandService->getBrands());
     }
 
-    #[Route('/create', name: 'api_v1_brand_create', methods: ['POST'])]
+    #[Route(path: '/create', name: 'api_v1_brand_create', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): Response {
 
@@ -33,9 +33,10 @@ class BrandController extends AbstractController
         return $this->json($this->brandService->createBrand($content->name));
     }
 
-    #[Route('/index/names', name: 'api_v1_brand_index_names', methods: ['GET'])]
+    #[Route(path: '/index/names', name: 'api_v1_brand_index_names', methods: ['GET'])]
     #[IsGranted('PUBLIC_ACCESS')]
     public function names() : Response {
         return $this->json($this->brandService->getBrandNames());
     }
+
 }

@@ -32,4 +32,5 @@ class BrandRepository extends ServiceEntityRepository
         }
         return $brand;
     }
+
 }

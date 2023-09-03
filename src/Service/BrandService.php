@@ -15,17 +15,19 @@ class BrandService
 
     private BrandRepository $brandRepository;
     private EntityManagerInterface $em;
+
     public function __construct(BrandRepository $brandRepository, EntityManagerInterface $em)
     {
         $this->brandRepository = $brandRepository;
         $this->em = $em;
     }
 
-    public function getBrands () : BrandListResponse {
+    public function getBrands(): BrandListResponse
+    {
 
         $brands = $this->brandRepository->findAll();
         $items = array_map(
-            fn (Brand $brand) => new BrandListItem(
+            fn(Brand $brand) => new BrandListItem(
                 $brand->getId(), $brand->getName(), $brand->getWheelPosition(), $brand->getSlug()
             ),
             $brands
@@ -36,14 +38,15 @@ class BrandService
     /**
      * @return string[]|null
      */
-    public function getBrandNames () : ?array {
+    public function getBrandNames(): ?array
+    {
         $brands = $this->brandRepository->findAll();
 
         $items = array_values(
             array_unique(
                 array_map(
                     fn(Brand $brand) => $brand->getName(),
-                $brands
+                    $brands
                 )
             )
         );
@@ -54,7 +57,8 @@ class BrandService
         return $items;
     }
 
-    public function createBrand ($name): array {
+    public function createBrand($name): array
+    {
 
         $brandL = new Brand();
         $brandL->setName($name);
@@ -75,4 +79,5 @@ class BrandService
 
         return ['brandName' => $name];
     }
+
 }
