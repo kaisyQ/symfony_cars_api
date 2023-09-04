@@ -1,5 +1,7 @@
 # symfony_cars_api
 
+## API method - REST
+
 ## directories
 
 ### Service - all services
