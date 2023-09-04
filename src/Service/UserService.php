@@ -3,10 +3,12 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Exception\NotFoundException;
 use App\Model\UserListItem;
 use App\Model\UserListResponse;
 use App\Model\UserRequest;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -71,18 +73,24 @@ class UserService
         $this->em->persist($user);
         $this->em->flush();
 
+        $biggestId = $this->userRepository->findAll(['id' => Criteria::DESC])[0]->getId();
+
         return new UserListItem(
             $user->getEmail(),
-            $user->getId(),
+            $biggestId + 1,
             $user->getRoles()
         );
     }
+
+    /**
+     * @throws NotFoundException
+     */
     public function deleteUser(string $email): string {
 
         $user = $this->userRepository->findByEmail($email);
 
         if (!$user) {
-            throw new \Error('THERE IS NO USER WITH EMAIL = ' . $email);
+            throw new NotFoundException();
         }
 
 

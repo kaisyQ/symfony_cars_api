@@ -7,7 +7,7 @@ class UpdateCarRequest
 {
     #[Assert\NotBlank]
     #[Assert\NotNull]
-    private string $id;
+    private int $id;
     #[Assert\NotBlank]
     #[Assert\NotNull]
     private string $name;
@@ -20,12 +20,12 @@ class UpdateCarRequest
     private string $wheelPosition;
 
     /**
-     * @param string $id
+     * @param int $id
      * @param string $name
      * @param string $brandName
      * @param string $wheelPosition
      */
-    public function __construct(string $id, string $name, string $brandName, string $wheelPosition)
+    public function __construct(int $id, string $name, string $brandName, string $wheelPosition)
     {
         $this->id = $id;
         $this->name = $name;
@@ -33,7 +33,7 @@ class UpdateCarRequest
         $this->wheelPosition = $wheelPosition;
     }
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }

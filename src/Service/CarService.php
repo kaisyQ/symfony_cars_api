@@ -126,8 +126,7 @@ class CarService
 
         $this->em->flush();
 
-
-        return  new CarListResponse(
+        return new CarListResponse(
             [
                 new CarListItem(
                     $car->getId(),
