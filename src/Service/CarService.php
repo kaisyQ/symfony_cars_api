@@ -114,7 +114,6 @@ class CarService
             throw new NotFoundException();
         }
 
-
         if ($car->getName() === $carRequest->getName() && $car->getBrand()->getId() === $brand->getId()) {
 
             throw new NothingToUpdateException();
