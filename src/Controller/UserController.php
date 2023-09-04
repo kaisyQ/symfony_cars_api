@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use OpenApi\Annotations\OpenApi;
 
 #[Route(path: '/admin/users')]
-#[IsGranted('ROLE_ADMIN')]
+#[IsGranted('PUBLIC_ACCESS')]
 class UserController extends AbstractController
 {
     private UserService $userService;

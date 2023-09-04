@@ -68,7 +68,7 @@ class UserService
 
         $user->setPassword($hashedPassword);
 
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setRoles($userRequest->getRoles());
 
         $this->em->persist($user);
         $this->em->flush();
